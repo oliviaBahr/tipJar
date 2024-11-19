@@ -1,0 +1,71 @@
+package models
+
+import (
+	"tipJar/log"
+	"tipJar/styles"
+
+	tea "github.com/charmbracelet/bubbletea"
+	"github.com/charmbracelet/lipgloss"
+)
+
+type NavBar struct {
+	styler    *styles.Styler
+	Tabs      []string
+	ActiveTab int
+
+	numTabs int
+}
+
+func NewNavBar(pageList []Page) NavBar {
+	tabs := []string{}
+	for _, page := range pageList {
+		tabs = append(tabs, page.Title())
+	}
+
+	return NavBar{
+		styler:  styles.GetStyler(),
+		Tabs:    tabs,
+		numTabs: len(tabs),
+	}
+}
+
+func (n NavBar) Init() tea.Cmd {
+	return nil
+}
+
+func (n NavBar) View() string {
+	var renderedTabs []string
+	for i, t := range n.Tabs {
+		style := n.Styler().BorderStyle()
+		if n.ActiveTab == i {
+			style = style.BorderForeground(n.Styler().AccentColor)
+		}
+		renderedTabs = append(renderedTabs, style.Render(t))
+	}
+	joined := lipgloss.JoinHorizontal(lipgloss.Top, renderedTabs...)
+	return joined
+}
+
+func (n NavBar) Update(msg tea.Msg) (NavBar, tea.Cmd) {
+	log.Debug("navbar update")
+	switch msg := msg.(type) {
+	case tea.KeyMsg:
+		switch msg.String() {
+		case "right":
+			log.Debug("navbar right")
+			n.ActiveTab = (n.ActiveTab + 1) % n.numTabs
+		case "left":
+			log.Debug("navbar left")
+			n.ActiveTab = (n.ActiveTab - 1 + n.numTabs) % n.numTabs
+		}
+	}
+	return n, nil
+}
+
+func (n *NavBar) Width() int {
+	return lipgloss.Width(n.View())
+}
+
+func (n NavBar) Styler() *styles.Styler {
+	return n.styler
+}
