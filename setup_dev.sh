@@ -20,6 +20,11 @@ tmux new-session -d -s $SESSION -n $WINDOW "cd $DIR; $SHELL"
 # Enable mouse support
 tmux set -g mouse on
 
+# Make status bar transparent/minimal
+tmux set -g status-style bg=default
+tmux set -g status-fg darkgreen
+tmux set -g status-right ""
+
 # Name the current pane 'air'
 tmux select-pane -t $SESSION:$WINDOW -T air
 

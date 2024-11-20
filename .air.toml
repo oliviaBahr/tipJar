@@ -1,5 +1,4 @@
 root = "."
-tmp_dir = "tmp"
 
 [build]
   cmd_start = "./setup_dev.sh" # Initial setup command - runs once when air starts
