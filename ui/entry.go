@@ -1,6 +1,7 @@
 package ui
 
 import (
+	"os"
 	"tipJar/core"
 	"tipJar/globals/config"
 	"tipJar/globals/log"
@@ -92,7 +93,7 @@ func RunUI() error {
 	m := initialModel(jar)
 
 	log.Debug("running ui")
-	if _, err := tea.NewProgram(m).Run(); err != nil {
+	if _, err := tea.NewProgram(m, tea.WithOutput(os.Stdout)).Run(); err != nil {
 		log.Fatal("failed to run ui", "error", err)
 	}
 	return nil
