@@ -1,0 +1,11 @@
+root = "."
+tmp_dir = "tmp"
+
+[build]
+  cmd_start = "./setup_dev.sh" # Initial setup command - runs once when air starts
+  bin = "./refresh.sh"
+  delay = 0
+  exclude_dir = ["assets", "tmp", "vendor"]
+  include_ext = ["go"]
+  exclude_regex = ["_test\\.go"]
+  no_follow = true
