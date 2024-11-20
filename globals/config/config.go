@@ -16,20 +16,15 @@ type Config struct {
 	AccentColor   lipgloss.Color `json:"accentColor"`
 	InactiveColor lipgloss.Color `json:"inactiveColor"`
 	TextColor     lipgloss.Color `json:"textColor"`
-
-	// non-configurable. for dev use
-	RepoDir string
 }
 
 func DefaultConfig() *Config {
 	return &Config{
 		DBPath: defaultDBPath(),
 
-		AccentColor:   lipgloss.Color("205"),
-		InactiveColor: lipgloss.Color("242"),
-		TextColor:     lipgloss.Color("236"),
-
-		RepoDir: fp.Dir(fp.Dir("config.go")),
+		AccentColor:   lipgloss.Color("205"), // pink
+		InactiveColor: lipgloss.Color("242"), // light gray
+		TextColor:     lipgloss.Color("15"),  // white
 	}
 }
 
@@ -44,7 +39,7 @@ func LoadConfig() (*Config, error) {
 	}
 
 	// decode
-	var config Config
+	config := DefaultConfig()
 	decoder := json.NewDecoder(cfgFile)
 	err = decoder.Decode(&config)
 	if err != nil {
@@ -56,7 +51,7 @@ func LoadConfig() (*Config, error) {
 	// set env path
 	config.DBPath = userDBPath()
 
-	return &config, nil
+	return config, nil
 }
 
 func SaveConfig(cfg *Config) error {
