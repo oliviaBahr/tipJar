@@ -36,6 +36,7 @@ func (s *Styler) Init() tea.Cmd {
 func (s *Styler) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.WindowSizeMsg:
+		log.Debug("updating window size", "width", msg.Width, "height", msg.Height)
 		s.termWidth = msg.Width
 		s.termHeight = msg.Height
 	}
