@@ -1,12 +1,13 @@
 package models
 
-import (
-	"tipJar/globals/styles"
+import "tipJar/ui/styles"
 
-	tea "github.com/charmbracelet/bubbletea"
-)
+type BaseComponent struct {
+	Styler *styles.Styler
+}
 
-type BaseComponent interface {
-	tea.Model
-	Styler() *styles.Styler
+func NewBaseComponent() BaseComponent {
+	return BaseComponent{
+		Styler: styles.DefaultStyler,
+	}
 }

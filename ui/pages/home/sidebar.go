@@ -2,7 +2,7 @@ package home
 
 import (
 	"tipJar/globals/log"
-	"tipJar/globals/styles"
+	"tipJar/ui/models"
 
 	"strings"
 
@@ -11,12 +11,13 @@ import (
 )
 
 type Sidebar struct {
+	tea.Model
+	models.BaseComponent
 	searchInput  string
 	tags         []string
 	selectedTags []string
 	style        lipgloss.Style
 	focused      bool
-	styler       *styles.Styler
 }
 
 type TagToggled struct {
@@ -24,20 +25,21 @@ type TagToggled struct {
 	Selected bool
 }
 
-func NewSidebar(styler *styles.Styler, tags []string) *Sidebar {
+func NewSidebar(tags []string) *Sidebar {
+	nsb := Sidebar{
+		BaseComponent: models.NewBaseComponent(),
+		tags:          tags,
+		selectedTags:  []string{},
+	}
 	style := lipgloss.NewStyle().
-		Inherit(styler.BorderStyle()).
+		Inherit(nsb.Styler.BorderStyle()).
 		Width(16).
-		Height(styler.PageStyle().GetHeight()-1).
+		Height(nsb.Styler.PageStyle().GetHeight()-1).
 		Border(lipgloss.RoundedBorder(), true, true, true, false).
 		Align(lipgloss.Center)
 
-	return &Sidebar{
-		tags:         tags,
-		selectedTags: []string{},
-		style:        style,
-		styler:       styler,
-	}
+	nsb.style = style
+	return &nsb
 }
 
 func (s *Sidebar) Update(msg tea.Msg) (*Sidebar, tea.Cmd) {
@@ -76,7 +78,7 @@ func (s *Sidebar) View() string {
 	// Build search bar
 	searchStyle := lipgloss.NewStyle().
 		Padding(0, 1).
-		Inherit(s.styler.BorderStyle())
+		Inherit(s.Styler.BorderStyle())
 
 	searchPrompt := "🔍 "
 	if s.focused {
@@ -93,7 +95,7 @@ func (s *Sidebar) View() string {
 		tagStyle := lipgloss.NewStyle()
 		if s.isTagSelected(tag) {
 			tagStyle = tagStyle.
-				Background(s.styler.AccentColor).
+				Background(s.Styler.AccentColor).
 				Foreground(lipgloss.NoColor{})
 		}
 		tagList = append(tagList, tagStyle.Render("# "+tag))

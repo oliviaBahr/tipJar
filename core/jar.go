@@ -6,16 +6,14 @@ import (
 	fp "path/filepath"
 	"tipJar/globals/config"
 	"tipJar/globals/log"
-	"tipJar/globals/styles"
 
 	_ "github.com/mattn/go-sqlite3"
 )
 
 type Jar struct {
 	*sql.DB
-	Tips   []*Tip
-	Cfg    *config.Config
-	Styler *styles.Styler
+	Tips []*Tip
+	Cfg  *config.Config
 }
 
 func LoadJar(cfg *config.Config) (*Jar, error) {
@@ -43,9 +41,6 @@ func LoadJar(cfg *config.Config) (*Jar, error) {
 		return nil, err
 	}
 
-	log.Debug("creating styler")
-	styler := styles.NewStyler(cfg)
-
 	log.Debug("loading tips from db")
 	tips, err := db.Query("SELECT * FROM tipJar")
 	if err != nil {
@@ -53,7 +48,7 @@ func LoadJar(cfg *config.Config) (*Jar, error) {
 		return nil, err
 	}
 
-	jar := &Jar{db, rowsToTips(tips), cfg, styler}
+	jar := &Jar{db, rowsToTips(tips), cfg}
 	return jar, nil
 }
 

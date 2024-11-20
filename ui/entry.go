@@ -4,9 +4,9 @@ import (
 	"tipJar/core"
 	"tipJar/globals/config"
 	"tipJar/globals/log"
-	"tipJar/globals/styles"
 	"tipJar/ui/models"
 	"tipJar/ui/pages"
+	"tipJar/ui/styles"
 
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"

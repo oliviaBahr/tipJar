@@ -17,8 +17,8 @@ func NewPages(jar *core.Jar) Pages {
 	log.Debug("creating pages")
 	return Pages{
 		home.NewHomePage(jar),
-		newtip.NewNewTipPage(jar.Styler),
-		about.NewAboutPage(jar.Styler),
+		newtip.NewNewTipPage(),
+		about.NewAboutPage(),
 	}
 }
 

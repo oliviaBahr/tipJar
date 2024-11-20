@@ -2,14 +2,14 @@ package models
 
 import (
 	"tipJar/globals/log"
-	"tipJar/globals/styles"
 
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 )
 
 type NavBar struct {
-	styler    *styles.Styler
+	tea.Model
+	BaseComponent
 	Tabs      []string
 	ActiveTab int
 
@@ -23,9 +23,9 @@ func NewNavBar(pageList []Page) NavBar {
 	}
 
 	return NavBar{
-		styler:  styles.GetStyler(),
-		Tabs:    tabs,
-		numTabs: len(tabs),
+		BaseComponent: NewBaseComponent(),
+		Tabs:          tabs,
+		numTabs:       len(tabs),
 	}
 }
 
@@ -36,9 +36,9 @@ func (n NavBar) Init() tea.Cmd {
 func (n NavBar) View() string {
 	var renderedTabs []string
 	for i, t := range n.Tabs {
-		style := n.Styler().BorderStyle()
+		style := n.Styler.BorderStyle()
 		if n.ActiveTab == i {
-			style = style.BorderForeground(n.Styler().AccentColor)
+			style = style.BorderForeground(n.Styler.AccentColor)
 		}
 		renderedTabs = append(renderedTabs, style.Render(t))
 	}
@@ -64,8 +64,4 @@ func (n NavBar) Update(msg tea.Msg) (NavBar, tea.Cmd) {
 
 func (n *NavBar) Width() int {
 	return lipgloss.Width(n.View())
-}
-
-func (n NavBar) Styler() *styles.Styler {
-	return n.styler
 }

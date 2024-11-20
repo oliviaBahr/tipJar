@@ -2,7 +2,6 @@ package newtip
 
 import (
 	"tipJar/globals/log"
-	"tipJar/globals/styles"
 	"tipJar/ui/models"
 
 	tea "github.com/charmbracelet/bubbletea"
@@ -12,11 +11,11 @@ import (
 
 type newTipPage struct {
 	models.Page
-	styler *styles.Styler
-	form   *huh.Form
+	models.BaseComponent
+	form *huh.Form
 }
 
-func NewNewTipPage(styler *styles.Styler) *newTipPage {
+func NewNewTipPage() *newTipPage {
 	log.Debug("creating new tip page")
 	form := huh.NewForm(
 		huh.NewGroup(
@@ -40,8 +39,8 @@ func NewNewTipPage(styler *styles.Styler) *newTipPage {
 	)
 
 	return &newTipPage{
-		styler: styler,
-		form:   form,
+		BaseComponent: models.NewBaseComponent(),
+		form:          form,
 	}
 }
 
@@ -80,5 +79,5 @@ func (p newTipPage) View() string {
 }
 
 func (p newTipPage) PageStyle() lipgloss.Style {
-	return p.styler.PageStyle()
+	return p.Styler.PageStyle()
 }

@@ -2,7 +2,6 @@ package about
 
 import (
 	"tipJar/globals/log"
-	"tipJar/globals/styles"
 	"tipJar/ui/models"
 
 	tea "github.com/charmbracelet/bubbletea"
@@ -11,13 +10,13 @@ import (
 
 type AboutPage struct {
 	models.Page
-	styler *styles.Styler
+	models.BaseComponent
 }
 
-func NewAboutPage(styler *styles.Styler) AboutPage {
+func NewAboutPage() AboutPage {
 	log.Debug("creating about page")
 	return AboutPage{
-		styler: styler,
+		BaseComponent: models.NewBaseComponent(),
 	}
 }
 
@@ -41,5 +40,5 @@ func (p AboutPage) View() string {
 }
 
 func (p AboutPage) PageStyle() lipgloss.Style {
-	return p.styler.PageStyle()
+	return p.Styler.PageStyle()
 }

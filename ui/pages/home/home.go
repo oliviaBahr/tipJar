@@ -3,7 +3,6 @@ package home
 import (
 	"tipJar/core"
 	"tipJar/globals/log"
-	"tipJar/globals/styles"
 	"tipJar/ui/models"
 
 	tea "github.com/charmbracelet/bubbletea"
@@ -12,7 +11,7 @@ import (
 
 type HomePage struct {
 	models.Page
-	styler  *styles.Styler
+	models.BaseComponent
 	sidebar *Sidebar
 	tipList *TipList
 }
@@ -20,9 +19,9 @@ type HomePage struct {
 func NewHomePage(jar *core.Jar) HomePage {
 	log.Debug("creating home page")
 	return HomePage{
-		styler:  jar.Styler,
-		sidebar: NewSidebar(jar.Styler, []string{"tag1", "tag2"}),
-		tipList: NewTipList(jar),
+		BaseComponent: models.NewBaseComponent(),
+		sidebar:       NewSidebar([]string{"tag1", "tag2"}),
+		tipList:       NewTipList(jar),
 	}
 }
 
@@ -54,5 +53,5 @@ func (p HomePage) View() string {
 }
 
 func (p HomePage) PageStyle() lipgloss.Style {
-	return p.styler.PageStyle()
+	return p.Styler.PageStyle()
 }
