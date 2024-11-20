@@ -6,7 +6,7 @@ import (
 
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/huh"
-	"github.com/charmbracelet/lipgloss"
+	lg "github.com/charmbracelet/lipgloss"
 )
 
 type newTipPage struct {
@@ -75,9 +75,9 @@ func (p newTipPage) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 }
 
 func (p newTipPage) View() string {
-	return p.form.View()
+	return p.Styler.PageStyle().Render(p.form.View())
 }
 
-func (p newTipPage) PageStyle() lipgloss.Style {
+func (p newTipPage) PageStyle() lg.Style {
 	return p.Styler.PageStyle()
 }

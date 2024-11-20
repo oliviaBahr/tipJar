@@ -6,7 +6,7 @@ import (
 	"tipJar/ui/models"
 
 	tea "github.com/charmbracelet/bubbletea"
-	"github.com/charmbracelet/lipgloss"
+	lg "github.com/charmbracelet/lipgloss"
 )
 
 type HomePage struct {
@@ -49,9 +49,10 @@ func (p HomePage) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 func (p HomePage) View() string {
 	log.Debug("rendering home page")
-	return lipgloss.JoinHorizontal(lipgloss.Left, p.sidebar.View(), p.tipList.View())
+	v := lg.JoinHorizontal(lg.Left, p.sidebar.View(), p.tipList.View())
+	return p.PageStyle().Render(v)
 }
 
-func (p HomePage) PageStyle() lipgloss.Style {
+func (p HomePage) PageStyle() lg.Style {
 	return p.Styler.PageStyle()
 }

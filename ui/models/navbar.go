@@ -4,7 +4,7 @@ import (
 	"tipJar/globals/log"
 
 	tea "github.com/charmbracelet/bubbletea"
-	"github.com/charmbracelet/lipgloss"
+	lg "github.com/charmbracelet/lipgloss"
 )
 
 type NavBar struct {
@@ -33,7 +33,7 @@ func (n NavBar) Init() tea.Cmd {
 	return nil
 }
 
-func (n NavBar) View() string {
+func (n *NavBar) View() string {
 	var renderedTabs []string
 	for i, t := range n.Tabs {
 		style := n.Styler.BorderStyle()
@@ -42,11 +42,11 @@ func (n NavBar) View() string {
 		}
 		renderedTabs = append(renderedTabs, style.Render(t))
 	}
-	joined := lipgloss.JoinHorizontal(lipgloss.Top, renderedTabs...)
+	joined := lg.JoinHorizontal(lg.Top, renderedTabs...)
 	return joined
 }
 
-func (n NavBar) Update(msg tea.Msg) (NavBar, tea.Cmd) {
+func (n *NavBar) Update(msg tea.Msg) (NavBar, tea.Cmd) {
 	log.Debug("navbar update")
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
@@ -59,9 +59,9 @@ func (n NavBar) Update(msg tea.Msg) (NavBar, tea.Cmd) {
 			n.ActiveTab = (n.ActiveTab - 1 + n.numTabs) % n.numTabs
 		}
 	}
-	return n, nil
+	return *n, nil
 }
 
 func (n *NavBar) Width() int {
-	return lipgloss.Width(n.View())
+	return lg.Width(n.View())
 }

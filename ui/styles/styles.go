@@ -1,33 +1,49 @@
 package styles
 
 import (
-	"os"
 	"tipJar/globals/config"
 	"tipJar/globals/log"
 
-	"github.com/charmbracelet/lipgloss"
-	"golang.org/x/term"
+	tea "github.com/charmbracelet/bubbletea"
+	lg "github.com/charmbracelet/lipgloss"
 )
 
 var DefaultStyler *Styler
 
 type Styler struct {
-	AccentColor   lipgloss.Color
-	InactiveColor lipgloss.Color
-	TextColor     lipgloss.Color
+	tea.Model
+	AccentColor   lg.Color
+	InactiveColor lg.Color
+	TextColor     lg.Color
+
+	termWidth  int
+	termHeight int
 }
 
 func NewStyler(config *config.Config) *Styler {
 	log.Debug("creating new styler")
-	aColor := config.AccentColor
-	iColor := config.InactiveColor
-	tColor := config.TextColor
-
 	return &Styler{
-		AccentColor:   aColor,
-		InactiveColor: iColor,
-		TextColor:     tColor,
+		AccentColor:   config.AccentColor,
+		InactiveColor: config.InactiveColor,
+		TextColor:     config.TextColor,
 	}
+}
+
+func (s *Styler) Init() tea.Cmd {
+	return nil
+}
+
+func (s *Styler) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+	switch msg := msg.(type) {
+	case tea.WindowSizeMsg:
+		s.termWidth = msg.Width
+		s.termHeight = msg.Height
+	}
+	return s, nil
+}
+
+func (s *Styler) View() string {
+	return ""
 }
 
 func InitializeStyles(cfg *config.Config) {
@@ -43,22 +59,29 @@ func GetStyler() *Styler {
 
 // Styles
 
-func (s *Styler) BorderStyle() lipgloss.Style {
-	return lipgloss.NewStyle().
-		Border(lipgloss.RoundedBorder()).
+func (s *Styler) BaseStyle() lg.Style {
+	return lg.NewStyle().
+		Foreground(s.TextColor)
+}
+
+func (s *Styler) BorderStyle() lg.Style {
+	return s.BaseStyle().
+		Border(lg.RoundedBorder()).
 		BorderForeground(s.InactiveColor)
 }
 
-func (s *Styler) DocStyle() lipgloss.Style {
-	return lipgloss.NewStyle().Padding(1).Align(lipgloss.Center)
+func (s *Styler) DocStyle() lg.Style {
+	return s.BorderStyle().
+		Height(s.termHeight-2).
+		Width(s.termWidth-2).
+		MaxHeight(s.termHeight).
+		MaxWidth(s.termWidth).
+		Align(lg.Center, lg.Center)
 }
 
-func (s *Styler) PageStyle() lipgloss.Style {
-	termWidth, _, _ := term.GetSize(int(os.Stdout.Fd()))
+func (s *Styler) PageStyle() lg.Style {
 	return s.BorderStyle().
-		Padding(1).
-		Width(termWidth - 20).
-		Height(18).
-		BorderForeground(s.AccentColor).
-		Foreground(s.TextColor)
+		Width(int(s.termWidth/5) * 4).
+		Height(int(s.termHeight/3) * 2).
+		Padding(4)
 }

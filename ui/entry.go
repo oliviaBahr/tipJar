@@ -9,11 +9,12 @@ import (
 	"tipJar/ui/styles"
 
 	tea "github.com/charmbracelet/bubbletea"
-	"github.com/charmbracelet/lipgloss"
+	lg "github.com/charmbracelet/lipgloss"
 )
 
 type model struct {
 	tea.Model
+	models.BaseComponent
 	Jar *core.Jar
 
 	NavBar models.NavBar
@@ -28,10 +29,11 @@ func initialModel(jar *core.Jar) model {
 	navBar := models.NewNavBar(tabs)
 
 	return model{
-		Jar:    jar,
-		NavBar: navBar,
-		tabs:   tabs,
-		err:    nil,
+		BaseComponent: models.NewBaseComponent(),
+		Jar:           jar,
+		NavBar:        navBar,
+		tabs:          tabs,
+		err:           nil,
 	}
 }
 
@@ -48,39 +50,26 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case "ctrl+c", "q":
 			log.Info("quitting")
 			return m, tea.Quit
+		default:
+			m.NavBar.Update(msg)
 		}
+	case tea.WindowSizeMsg:
+		m.Styler.Update(msg)
 	}
 
-	m.NavBar, _ = m.NavBar.Update(msg)
-	cmd := m.updateActiveTab(msg)
+	_, cmd := m.activeTab().Update(msg)
 	return m, cmd
 }
 
 func (m model) View() string {
 	log.Debug("rendering main view")
-	pageV := m.activeTabView()
-	wholeV := lipgloss.JoinVertical(lipgloss.Center, m.navBarView(), pageV)
-	return wholeV
+	pageV := m.activeTab().View()
+	wholeV := lg.JoinVertical(lg.Center, m.NavBar.View(), pageV)
+	return m.Styler.DocStyle().Render(wholeV)
 }
 
-func (m model) activeTabView() string {
-	page := m.tabs[m.NavBar.ActiveTab]
-	log.Debug("rendering active tab", "page", page.Title())
-	return page.View()
-}
-
-func (m model) updateActiveTab(msg tea.Msg) tea.Cmd {
-	log.Debug("updating active tab", "page", m.tabs[m.NavBar.ActiveTab].Title())
-	page, cmd := m.tabs[m.NavBar.ActiveTab].Update(msg)
-	if p, ok := page.(models.Page); ok {
-		m.tabs[m.NavBar.ActiveTab] = p
-	}
-	return cmd
-}
-
-func (m model) navBarView() string {
-	log.Debug("rendering nav bar")
-	return m.NavBar.View()
+func (m model) activeTab() models.Page {
+	return m.tabs[m.NavBar.ActiveTab]
 }
 
 func RunUI() error {

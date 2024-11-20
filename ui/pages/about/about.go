@@ -5,7 +5,7 @@ import (
 	"tipJar/ui/models"
 
 	tea "github.com/charmbracelet/bubbletea"
-	"github.com/charmbracelet/lipgloss"
+	lg "github.com/charmbracelet/lipgloss"
 )
 
 type AboutPage struct {
@@ -39,6 +39,6 @@ func (p AboutPage) View() string {
 		"Created with ❤️ using Go and Bubble Tea")
 }
 
-func (p AboutPage) PageStyle() lipgloss.Style {
+func (p AboutPage) PageStyle() lg.Style {
 	return p.Styler.PageStyle()
 }

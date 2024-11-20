@@ -7,7 +7,7 @@ import (
 	"strings"
 
 	tea "github.com/charmbracelet/bubbletea"
-	"github.com/charmbracelet/lipgloss"
+	lg "github.com/charmbracelet/lipgloss"
 )
 
 type Sidebar struct {
@@ -16,7 +16,7 @@ type Sidebar struct {
 	searchInput  string
 	tags         []string
 	selectedTags []string
-	style        lipgloss.Style
+	style        lg.Style
 	focused      bool
 }
 
@@ -31,12 +31,8 @@ func NewSidebar(tags []string) *Sidebar {
 		tags:          tags,
 		selectedTags:  []string{},
 	}
-	style := lipgloss.NewStyle().
-		Inherit(nsb.Styler.BorderStyle()).
-		Width(16).
-		Height(nsb.Styler.PageStyle().GetHeight()-1).
-		Border(lipgloss.RoundedBorder(), true, true, true, false).
-		Align(lipgloss.Center)
+	style := nsb.Styler.BorderStyle().
+		Width(16)
 
 	nsb.style = style
 	return &nsb
@@ -76,7 +72,7 @@ func (s *Sidebar) Update(msg tea.Msg) (*Sidebar, tea.Cmd) {
 func (s *Sidebar) View() string {
 	log.Debug("rendering sidebar")
 	// Build search bar
-	searchStyle := lipgloss.NewStyle().
+	searchStyle := lg.NewStyle().
 		Padding(0, 1).
 		Inherit(s.Styler.BorderStyle())
 
@@ -92,17 +88,17 @@ func (s *Sidebar) View() string {
 	// Build tags list
 	var tagList []string
 	for _, tag := range s.tags {
-		tagStyle := lipgloss.NewStyle()
+		tagStyle := lg.NewStyle()
 		if s.isTagSelected(tag) {
 			tagStyle = tagStyle.
 				Background(s.Styler.AccentColor).
-				Foreground(lipgloss.NoColor{})
+				Foreground(lg.NoColor{})
 		}
 		tagList = append(tagList, tagStyle.Render("# "+tag))
 	}
 
-	content := lipgloss.JoinVertical(
-		lipgloss.Left,
+	content := lg.JoinVertical(
+		lg.Left,
 		searchBar,
 		"",
 		strings.Join(tagList, "\n"),

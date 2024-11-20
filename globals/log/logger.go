@@ -5,7 +5,7 @@ import (
 	fp "path/filepath"
 	"tipJar/globals/utils"
 
-	"github.com/charmbracelet/lipgloss"
+	lg "github.com/charmbracelet/lipgloss"
 	charmLog "github.com/charmbracelet/log"
 	"github.com/muesli/termenv"
 )
@@ -29,7 +29,7 @@ func newLogger() *charmLog.Logger {
 		ReportCaller:    true,
 		ReportTimestamp: false,
 	})
-	lipgloss.SetColorProfile(termenv.ANSI256)
+	lg.SetColorProfile(termenv.ANSI256)
 	styles := charmLog.DefaultStyles()
 	Logger.SetStyles(styles)
 	return Logger

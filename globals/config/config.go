@@ -7,24 +7,24 @@ import (
 
 	"tipJar/globals/log"
 
-	"github.com/charmbracelet/lipgloss"
+	lg "github.com/charmbracelet/lipgloss"
 )
 
 type Config struct {
 	DBPath string
 
-	AccentColor   lipgloss.Color `json:"accentColor"`
-	InactiveColor lipgloss.Color `json:"inactiveColor"`
-	TextColor     lipgloss.Color `json:"textColor"`
+	AccentColor   lg.Color `json:"accentColor"`
+	InactiveColor lg.Color `json:"inactiveColor"`
+	TextColor     lg.Color `json:"textColor"`
 }
 
 func DefaultConfig() *Config {
 	return &Config{
 		DBPath: defaultDBPath(),
 
-		AccentColor:   lipgloss.Color("205"), // pink
-		InactiveColor: lipgloss.Color("242"), // light gray
-		TextColor:     lipgloss.Color("15"),  // white
+		AccentColor:   lg.Color("205"), // pink
+		InactiveColor: lg.Color("242"), // light gray
+		TextColor:     lg.Color("15"),  // white
 	}
 }
 
