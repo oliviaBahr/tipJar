@@ -1,9 +1,12 @@
 package styles
 
 import (
-	"github.com/charmbracelet/lipgloss"
+	"os"
 	"tipJar/globals/config"
 	"tipJar/globals/log"
+
+	"github.com/charmbracelet/lipgloss"
+	"golang.org/x/term"
 )
 
 var DefaultStyler *Styler
@@ -51,9 +54,10 @@ func (s *Styler) DocStyle() lipgloss.Style {
 }
 
 func (s *Styler) PageStyle() lipgloss.Style {
+	termWidth, _, _ := term.GetSize(int(os.Stdout.Fd()))
 	return s.BorderStyle().
 		Padding(1).
-		Width(60).
+		Width(termWidth - 20).
 		Height(18).
 		BorderForeground(s.AccentColor).
 		Foreground(s.TextColor)
