@@ -1,8 +1,8 @@
 package models
 
 import (
-	"tipJar/log"
-	"tipJar/styles"
+	"tipJar/globals/log"
+	"tipJar/globals/styles"
 
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"

@@ -1,7 +1,7 @@
 package models
 
 import (
-	"tipJar/styles"
+	"tipJar/globals/styles"
 
 	tea "github.com/charmbracelet/bubbletea"
 )

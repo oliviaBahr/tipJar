@@ -3,7 +3,7 @@ package log
 import (
 	"os"
 	fp "path/filepath"
-	"tipJar/utils"
+	"tipJar/globals/utils"
 
 	"github.com/charmbracelet/lipgloss"
 	charmLog "github.com/charmbracelet/log"

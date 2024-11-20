@@ -2,7 +2,7 @@ package pages
 
 import (
 	"tipJar/core"
-	"tipJar/log"
+	"tipJar/globals/log"
 	"tipJar/ui/models"
 	"tipJar/ui/pages/about"
 	"tipJar/ui/pages/home"

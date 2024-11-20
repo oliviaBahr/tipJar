@@ -2,7 +2,7 @@ package home
 
 import (
 	"tipJar/core"
-	"tipJar/log"
+	"tipJar/globals/log"
 
 	"github.com/charmbracelet/bubbles/list"
 	tea "github.com/charmbracelet/bubbletea"

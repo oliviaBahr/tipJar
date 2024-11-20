@@ -4,9 +4,9 @@ import (
 	"database/sql"
 	"os"
 	fp "path/filepath"
-	"tipJar/config"
-	"tipJar/log"
-	"tipJar/styles"
+	"tipJar/globals/config"
+	"tipJar/globals/log"
+	"tipJar/globals/styles"
 
 	_ "github.com/mattn/go-sqlite3"
 )

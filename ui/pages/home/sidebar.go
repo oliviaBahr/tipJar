@@ -1,8 +1,8 @@
 package home
 
 import (
-	"tipJar/log"
-	"tipJar/styles"
+	"tipJar/globals/log"
+	"tipJar/globals/styles"
 
 	"strings"
 

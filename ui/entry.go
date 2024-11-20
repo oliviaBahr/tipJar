@@ -1,10 +1,10 @@
 package ui
 
 import (
-	"tipJar/config"
 	"tipJar/core"
-	"tipJar/log"
-	"tipJar/styles"
+	"tipJar/globals/config"
+	"tipJar/globals/log"
+	"tipJar/globals/styles"
 	"tipJar/ui/models"
 	"tipJar/ui/pages"
 

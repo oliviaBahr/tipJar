@@ -2,8 +2,8 @@ package styles
 
 import (
 	"github.com/charmbracelet/lipgloss"
-	"tipJar/config"
-	"tipJar/log"
+	"tipJar/globals/config"
+	"tipJar/globals/log"
 )
 
 var DefaultStyler *Styler

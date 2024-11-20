@@ -1,7 +1,7 @@
 package main
 
 import (
-	"tipJar/log"
+	"tipJar/globals/log"
 	"tipJar/ui"
 
 	"github.com/spf13/cobra"

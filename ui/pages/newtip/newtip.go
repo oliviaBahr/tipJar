@@ -1,8 +1,8 @@
 package newtip
 
 import (
-	"tipJar/log"
-	"tipJar/styles"
+	"tipJar/globals/log"
+	"tipJar/globals/styles"
 	"tipJar/ui/models"
 
 	tea "github.com/charmbracelet/bubbletea"

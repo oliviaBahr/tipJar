@@ -5,7 +5,7 @@ import (
 	"os"
 	fp "path/filepath"
 
-	"tipJar/log"
+	"tipJar/globals/log"
 
 	"github.com/charmbracelet/lipgloss"
 )

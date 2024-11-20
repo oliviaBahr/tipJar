@@ -2,7 +2,7 @@ package core
 
 import (
 	"testing"
-	"tipJar/utils"
+	"tipJar/globals/utils"
 
 	"github.com/stretchr/testify/assert"
 )
