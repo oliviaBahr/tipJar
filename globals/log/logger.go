@@ -10,8 +10,6 @@ import (
 	"github.com/muesli/termenv"
 )
 
-var Log = newLogger()
-
 func newLogger() *charmLog.Logger {
 	var writer *os.File
 	logDir, err := utils.GetRepoDir()
@@ -35,22 +33,29 @@ func newLogger() *charmLog.Logger {
 	return Logger
 }
 
+var logger = newLogger()
+
 func Debug(msg string, args ...any) {
-	Log.Debug(msg, args...)
+	logger.Helper()
+	logger.Debug(msg, args...)
 }
 
 func Info(msg string, args ...any) {
-	Log.Info(msg, args...)
+	logger.Helper()
+	logger.Info(msg, args...)
 }
 
 func Warn(msg string, args ...any) {
-	Log.Warn(msg, args...)
+	logger.Helper()
+	logger.Warn(msg, args...)
 }
 
 func Error(msg string, args ...any) {
-	Log.Error(msg, args...)
+	logger.Helper()
+	logger.Error(msg, args...)
 }
 
 func Fatal(msg string, args ...any) {
-	Log.Fatal(msg, args...)
+	logger.Helper()
+	logger.Fatal(msg, args...)
 }
