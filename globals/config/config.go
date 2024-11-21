@@ -37,6 +37,7 @@ func LoadConfig() (*Config, error) {
 		log.Error("error opening config file", "e", err)
 		return nil, err
 	}
+	defer cfgFile.Close()
 
 	// decode
 	config := DefaultConfig()
@@ -46,7 +47,6 @@ func LoadConfig() (*Config, error) {
 		log.Error("error decoding config file", "e", err)
 		return nil, err
 	}
-	cfgFile.Close()
 
 	// set env path
 	config.DBPath = userDBPath()

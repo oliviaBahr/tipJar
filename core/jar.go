@@ -38,6 +38,7 @@ func LoadJar(cfg *config.Config) (*Jar, error) {
 	`)
 	if err != nil {
 		log.Error("error opening or creating table", "e", err)
+		db.Close()
 		return nil, err
 	}
 
@@ -45,8 +46,10 @@ func LoadJar(cfg *config.Config) (*Jar, error) {
 	tips, err := db.Query("SELECT * FROM tipJar")
 	if err != nil {
 		log.Error("error querying database", "e", err)
+		db.Close()
 		return nil, err
 	}
+	defer tips.Close()
 
 	jar := &Jar{db, rowsToTips(tips), cfg}
 	return jar, nil

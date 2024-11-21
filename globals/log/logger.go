@@ -15,10 +15,14 @@ func newLogger() *charmLog.Logger {
 	var writer *os.File
 	dir, err := utils.GetRepoDir()
 	if err == nil {
-		writer, _ = os.OpenFile(filepath.Join(dir, ".tmp", "log.log"), os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+		writer, err = os.OpenFile(filepath.Join(dir, ".tmp", "log.log"), os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+		if err != nil {
+			writer = os.NewFile(0, os.DevNull)
+		}
 	} else {
-		writer, _ = os.OpenFile(os.DevNull, os.O_WRONLY, 0644)
+		writer = os.NewFile(0, os.DevNull)
 	}
+
 	lgr := charmLog.NewWithOptions(writer, charmLog.Options{
 		Level:           charmLog.DebugLevel,
 		ReportCaller:    true,
