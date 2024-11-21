@@ -90,10 +90,9 @@ func RunUI() error {
 	}
 
 	// Run ui
-	m := initialModel(jar)
-
 	log.Debug("running ui")
-	if _, err := tea.NewProgram(m, tea.WithOutput(os.Stdout)).Run(); err != nil {
+	m := initialModel(jar)
+	if _, err := tea.NewProgram(m, tea.WithOutput(os.Stdout), tea.WithAltScreen()).Run(); err != nil {
 		log.Fatal("failed to run ui", "error", err)
 	}
 	return nil
