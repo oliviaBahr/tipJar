@@ -75,14 +75,13 @@ func (s *Styler) DocStyle() lg.Style {
 	return s.BorderStyle().
 		Height(s.termHeight-2).
 		Width(s.termWidth-2).
-		MaxHeight(s.termHeight).
-		MaxWidth(s.termWidth).
-		Align(lg.Center, lg.Center)
+		Align(lg.Center, lg.Top)
 }
 
 func (s *Styler) PageStyle() lg.Style {
 	return s.BorderStyle().
-		Width(int(s.termWidth/5) * 4).
-		Height(int(s.termHeight/3) * 2).
-		Padding(4)
+		Height(s.termHeight - 7).
+		Width(s.termWidth - 6).
+		MaxHeight(s.termHeight - 5).
+		MaxWidth(s.termWidth - 4)
 }
