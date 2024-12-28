@@ -49,7 +49,7 @@ func Execute() error {
 }
 
 func init() {
-	rootCmd.Flags().StringP("log-to", "l", ".tmp/log.log", "stream or file to log to")
+	rootCmd.Flags().StringP("log-to", "l", "tmp/log.log", "stream or file to log to")
 
 	// Add boolean flags for each log level
 	rootCmd.Flags().BoolP("debug", "d", false, "set log level to debug")
