@@ -2,8 +2,9 @@ package home
 
 import (
 	"tipJar/core"
-	"tipJar/globals/log"
 	"tipJar/ui/models"
+
+	"github.com/charmbracelet/log"
 
 	tea "github.com/charmbracelet/bubbletea"
 	lg "github.com/charmbracelet/lipgloss"

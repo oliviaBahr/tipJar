@@ -1,8 +1,9 @@
 package newtip
 
 import (
-	"tipJar/globals/log"
 	"tipJar/ui/models"
+
+	"github.com/charmbracelet/log"
 
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/huh"

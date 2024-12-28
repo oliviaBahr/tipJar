@@ -2,32 +2,33 @@ package main
 
 import (
 	"os"
-	"tipJar/globals/log"
+	"tipJar/globals/logger"
 	"tipJar/ui"
 
-	charmLog "github.com/charmbracelet/log"
+	"github.com/charmbracelet/log"
+
 	"github.com/spf13/cobra"
 )
 
-var stdLog = charmLog.New(os.Stdout)
+var stdLog = log.New(os.Stdout)
 
 var rootCmd = &cobra.Command{
 	Use:   "tipJar",
 	Short: "tipJar is a CLI tool for managing notes",
 	Run: func(cmd *cobra.Command, args []string) {
-		logLevel := charmLog.DebugLevel // default level
+		logLevel := log.DebugLevel // default level
 		switch {
 		case cmd.Flag("debug").Changed:
-			logLevel = charmLog.DebugLevel
+			logLevel = log.DebugLevel
 		case cmd.Flag("info").Changed:
-			logLevel = charmLog.InfoLevel
+			logLevel = log.InfoLevel
 		case cmd.Flag("warn").Changed:
-			logLevel = charmLog.WarnLevel
+			logLevel = log.WarnLevel
 		case cmd.Flag("error").Changed:
-			logLevel = charmLog.ErrorLevel
+			logLevel = log.ErrorLevel
 		}
 		// init global logger
-		err := log.InitializeLogger(cmd.Flag("log-to").Value.String(), logLevel)
+		err := logger.InitializeFileLogger(cmd.Flag("log-to").Value.String(), logLevel)
 		if err != nil {
 			stdLog.Fatal("failed to initialize logger", "e", err)
 		}

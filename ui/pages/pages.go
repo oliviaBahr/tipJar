@@ -2,11 +2,12 @@ package pages
 
 import (
 	"tipJar/core"
-	"tipJar/globals/log"
 	"tipJar/ui/models"
 	"tipJar/ui/pages/about"
 	"tipJar/ui/pages/home"
 	"tipJar/ui/pages/newtip"
+
+	"github.com/charmbracelet/log"
 
 	tea "github.com/charmbracelet/bubbletea"
 )

@@ -1,8 +1,9 @@
 package home
 
 import (
-	"tipJar/globals/log"
 	"tipJar/ui/models"
+
+	"github.com/charmbracelet/log"
 
 	"strings"
 

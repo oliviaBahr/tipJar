@@ -5,7 +5,8 @@ import (
 	"os"
 	fp "path/filepath"
 	"tipJar/globals/config"
-	"tipJar/globals/log"
+
+	"github.com/charmbracelet/log"
 
 	_ "github.com/mattn/go-sqlite3"
 )

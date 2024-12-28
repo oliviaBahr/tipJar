@@ -4,10 +4,11 @@ import (
 	"os"
 	"tipJar/core"
 	"tipJar/globals/config"
-	"tipJar/globals/log"
 	"tipJar/ui/models"
 	"tipJar/ui/pages"
 	"tipJar/ui/styles"
+
+	"github.com/charmbracelet/log"
 
 	tea "github.com/charmbracelet/bubbletea"
 	lg "github.com/charmbracelet/lipgloss"
