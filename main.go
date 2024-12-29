@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 	"tipJar/globals/logger"
 	"tipJar/ui"
@@ -11,59 +12,79 @@ import (
 )
 
 var stdLog = log.New(os.Stdout)
+var logFile string
+var logLevel string
+
+func validateLogLevel() {
+	if _, ok := logger.LOG_LEVELS[logLevel]; !ok {
+		stdLog.Fatal("invalid log level", "e", fmt.Errorf("invalid log level: %s", logLevel))
+	}
+}
+
+func validateLogFile() {
+	logPath := ""
+	if logTo := logFile; logTo != "" {
+		logPath = logTo
+	} else if logLevel == "true" {
+		logPath = logger.DEFAULT_LOG_DIR
+	} else {
+		logPath = os.DevNull
+	}
+
+	// open log file
+	_, err := os.OpenFile(logPath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		stdLog.Fatal("failed to open log file", "e", err)
+	}
+}
 
 var rootCmd = &cobra.Command{
 	Use:   "tipJar",
 	Short: "tipJar is a CLI tool for managing notes",
 	Run: func(cmd *cobra.Command, args []string) {
-		logLevel := log.DebugLevel // default level
-		switch {
-		case cmd.Flag("debug").Changed:
-			logLevel = log.DebugLevel
-		case cmd.Flag("info").Changed:
-			logLevel = log.InfoLevel
-		case cmd.Flag("warn").Changed:
-			logLevel = log.WarnLevel
-		case cmd.Flag("error").Changed:
-			logLevel = log.ErrorLevel
-		}
-		// init global logger
-		err := logger.InitializeFileLogger(cmd.Flag("log-to").Value.String(), logLevel)
-		if err != nil {
-			stdLog.Fatal("failed to initialize logger", "e", err)
-		}
-		// enter ui
-		err = ui.RunUI()
+		stdLog.Info("running UI", "logFile", logFile, "logLevel", logLevel)
+		err := ui.RunUI()
 		if err != nil {
 			stdLog.Fatal("Main UI failed", "e", err)
 		}
 	},
 }
 
-func Execute() error {
-	err := rootCmd.Execute()
-	if err != nil {
-		stdLog.Error("cobra Root command failed", "e", err)
-		return err
-	}
-	return nil
+var listenCmd = &cobra.Command{
+	Use:   "listen",
+	Short: "listen to the log file",
+	Args:  cobra.NoArgs,
+	Run: func(cmd *cobra.Command, args []string) {
+		validateLogFile()
+		logger.Listen(logFile)
+	},
+}
+
+var logCmd = &cobra.Command{
+	Use:   "log",
+	Short: "Run tipJar with logging enabled",
+	Args:  cobra.NoArgs,
+	Run: func(cmd *cobra.Command, args []string) {
+		validateLogLevel()
+		validateLogFile()
+		logger.InitializeFileLogger(logFile, logger.LOG_LEVELS[logLevel])
+		rootCmd.Run(cmd, args)
+	},
 }
 
 func init() {
-	rootCmd.Flags().StringP("log-to", "l", "tmp/log.log", "stream or file to log to")
+	logCmd.Flags().StringVarP(&logLevel, "level", "l", "debug", "set log level (debug, info, warn, error, fatal)\ndefault: debug")
+	logCmd.Flags().StringVarP(&logFile, "log-file", "f", logger.DEFAULT_LOG_DIR, "specify the file to log to")
+	listenCmd.Flags().StringVarP(&logFile, "log-file", "f", logger.DEFAULT_LOG_DIR, "specify the file to log to")
 
-	// Add boolean flags for each log level
-	rootCmd.Flags().BoolP("debug", "d", false, "set log level to debug")
-	rootCmd.Flags().BoolP("info", "i", false, "set log level to info")
-	rootCmd.Flags().BoolP("warn", "w", false, "set log level to warn")
-	rootCmd.Flags().BoolP("error", "e", false, "set log level to error")
+	rootCmd.AddCommand(logCmd)
+	rootCmd.AddCommand(listenCmd)
 
-	// Make the log level flags mutually exclusive
-	rootCmd.MarkFlagsMutuallyExclusive("debug", "info", "warn", "error")
+	logger.InitializeNullLogger()
 }
 
 func main() {
-	err := Execute()
+	err := rootCmd.Execute()
 	if err != nil {
 		stdLog.Fatal("fatal error", "e", err)
 	}

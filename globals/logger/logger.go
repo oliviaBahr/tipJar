@@ -1,19 +1,22 @@
 package logger
 
 import (
-	"fmt"
+	"io"
 	"os"
+	"path/filepath"
 
 	"github.com/charmbracelet/log"
 )
 
-func InitializeFileLogger(logDir string, level log.Level) (err error) {
-	f, err := os.OpenFile(logDir, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+var DEFAULT_LOG_DIR = filepath.Join(os.TempDir(), "tipJar.log")
+
+func InitializeFileLogger(logPath string, level log.Level) {
+	file, err := os.OpenFile(logPath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
-		fmt.Printf("failed to open log file: %v\n", err)
-		return err
+		stdLog.Fatal("failed to open log file", "error", err)
 	}
-	logger := log.NewWithOptions(f, log.Options{
+
+	logger := log.NewWithOptions(file, log.Options{
 		Level:           level,
 		ReportCaller:    true,
 		ReportTimestamp: false,
@@ -21,5 +24,8 @@ func InitializeFileLogger(logDir string, level log.Level) (err error) {
 	})
 	// set the charm global default logger
 	log.SetDefault(logger)
-	return nil
+}
+
+func InitializeNullLogger() {
+	log.SetDefault(log.New(io.Discard))
 }

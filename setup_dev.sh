@@ -11,6 +11,7 @@ fi
 DIR=$(pwd)
 SESH="dev"
 WIN="main"
+BUILD="./tmp/tipJar"
 
 # Kill existing session if it exists
 tmux kill-session -t $SESH 2>/dev/null
@@ -39,7 +40,7 @@ tmux split-window -v -p 85 -t $SESH:$WIN.left
 tmux send-keys -t "$SESH:$WIN.top-left" "cd $DIR && air" Enter
 
 # Main logs in bottom-left (pane 1)
-tmux send-keys -t "$SESH:$WIN.bottom-left" "cd $DIR && tail -f tmp/log.log" Enter
+tmux send-keys -t "$SESH:$WIN.bottom-left" "cd $DIR && $BUILD listen" Enter
 
 # Main.go in right pane (pane 2)
 tmux select-pane -t $SESH:$WIN.right

@@ -1,7 +1,7 @@
 root = "."
 
 [build]
-  cmd = "./refresh.sh"
+  cmd = "go build -o tmp/tipJar main.go && bash ./refresh.sh"
   rerun = false
   include_ext = ["go"]
   exclude_regex = ["_test\\.go"]
